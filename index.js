@@ -48,17 +48,18 @@
 
 
 
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { VercelRequest, VercelResponse } = require('@vercel/node'); // Import Vercel handler
 
 const app = express();
-const PORT = 5000;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
+// Product Data
 let products = [
     { id: 1, title: "iPhone 11 Pro", price: 999, description: "Apple iPhone 11 Pro with A13 Bionic chip, triple-camera system, and 5.8-inch Super Retina display.", image: "https://tse4.mm.bing.net/th?id=OIP.hxntYXGXdm66L_u521_lpAAAAA&pid=Api&P=0&h=220" },
     { id: 2, title: "MacBook Air", price: 1200, description: "Apple MacBook Air with M1 chip, 13.3-inch Retina display, and 8GB RAM.", image: "https://tse4.mm.bing.net/th?id=OIP.CxR7xx2DWXxctoX42eUzfAHaEK&pid=Api&P=0&h=220" },
@@ -72,6 +73,7 @@ let products = [
     { id: 10, title: "Apple Watch Series 6", price: 399, description: "Apple Watch Series 6 with blood oxygen monitoring and ECG app.", image: "https://tse4.mm.bing.net/th?id=OIP.JFC1t9kN8asZxMWlzJJSzgHaEK&pid=Api&P=0&h=220" }
 ];
 
+// API Routes
 app.get('/api/products', (req, res) => {
     res.json(products);
 });
@@ -83,6 +85,7 @@ app.post('/api/products', (req, res) => {
     res.json(newProduct); // Return newly added product as response
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export the Express app as a Vercel handler
+module.exports = (req = VercelRequest, res = VercelResponse) => {
+    app(req, res);
+};
