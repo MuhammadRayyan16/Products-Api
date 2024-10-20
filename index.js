@@ -1,4 +1,14 @@
-const products = [
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = 5000;
+
+app.use(cors());
+app.use(bodyParser.json());
+
+let products = [
     { id: 1, title: "iPhone 11 Pro", price: 999, description: "Apple iPhone 11 Pro with A13 Bionic chip, triple-camera system, and 5.8-inch Super Retina display.", image: "https://tse4.mm.bing.net/th?id=OIP.hxntYXGXdm66L_u521_lpAAAAA&pid=Api&P=0&h=220" },
     { id: 2, title: "MacBook Air", price: 1200, description: "Apple MacBook Air with M1 chip, 13.3-inch Retina display, and 8GB RAM.", image: "https://tse4.mm.bing.net/th?id=OIP.CxR7xx2DWXxctoX42eUzfAHaEK&pid=Api&P=0&h=220" },
     { id: 3, title: "Samsung Galaxy S21", price: 850, description: "Samsung Galaxy S21 with Exynos 2100, 6.2-inch AMOLED display, and 128GB storage.", image: "https://tse4.mm.bing.net/th?id=OIP.i-VJnZag7h4IUTNb6a-7CAHaE7&pid=Api&P=0&h=220" },
@@ -11,15 +21,17 @@ const products = [
     { id: 10, title: "Apple Watch Series 6", price: 399, description: "Apple Watch Series 6 with blood oxygen monitoring and ECG app.", image: "https://tse4.mm.bing.net/th?id=OIP.JFC1t9kN8asZxMWlzJJSzgHaEK&pid=Api&P=0&h=220" }
 ];
 
-module.exports = (req, res) => {
-    if (req.method === 'GET') {
-        res.status(200).json(products);
-    } else if (req.method === 'POST') {
-        const newProduct = req.body;
-        newProduct.id = products.length + 1;
-        products.push(newProduct);
-        res.status(201).json(newProduct);
-    } else {
-        res.status(405).end(); // Method Not Allowed
-    }
-};
+app.get('/api/products', (req, res) => {
+    res.json(products);
+});
+
+app.post('/api/products', (req, res) => {
+    const newProduct = req.body;
+    newProduct.id = products.length + 1;
+    products.push(newProduct);
+    res.json(newProduct);
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
