@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,20 +22,20 @@ let products = [
     { id: 10, title: "Apple Watch Series 6", price: 399, description: "Apple Watch Series 6 with blood oxygen monitoring and ECG app.", image: "https://tse4.mm.bing.net/th?id=OIP.JFC1t9kN8asZxMWlzJJSzgHaEK&pid=Api&P=0&h=220" }
 ];
 
-// Endpoint to get all products
+
 app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
-// Endpoint to add a new product
+
 app.post('/api/products', (req, res) => {
     const newProduct = req.body;
-    newProduct.id = products.length + 1; // Assign a new ID
+    newProduct.id = products.length + 1; 
     products.push(newProduct);
     res.json(newProduct);
 });
 
-// Start the server
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
